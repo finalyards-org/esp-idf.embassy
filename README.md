@@ -57,8 +57,8 @@ $ cargo build --release -vv
 ### The output
 
 ```
-$ file ~/target/riscv32imac-esp-espidf/release/min
-/home/lima/target/riscv32imac-esp-espidf/release/min: ⏎
+$ file ~/target/riscv32imac-esp-espidf/release/idf-embassy-slim
+/home/lima/target/riscv32imac-esp-espidf/release/idf-embassy-slim: ⏎
 ELF 32-bit LSB executable, UCB RISC-V, RVC, soft-float ABI, version 1 (SYSV), statically linked, not stripped
 ```
 
@@ -66,8 +66,8 @@ ELF 32-bit LSB executable, UCB RISC-V, RVC, soft-float ABI, version 1 (SYSV), st
 
 <!--
 ```
-$ ls -al ~/target/riscv32imac-esp-espidf/release/min
--rwxrwxr-x 2 lima lima 1076596 Oct 30 14:10 /home/lima/target/riscv32imac-esp-espidf/release/min
+$ ls -al ~/target/riscv32imac-esp-espidf/release/idf-embassy-slim
+-rwxrwxr-x 2 lima lima 1076596 Oct 30 14:10 /home/lima/target/riscv32imac-esp-espidf/release/idf-embassy-slim
 ```
 
 That gives the output a 1.03 MiB size.

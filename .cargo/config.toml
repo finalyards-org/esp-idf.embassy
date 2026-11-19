@@ -15,7 +15,7 @@ rustflags = [
 [env]
 MCU="esp32c6"
 
-ESP_IDF_VERSION = "6.1"
+ESP_IDF_VERSION = "6.1.1"
 #ESP_IDF_VERSION = "5.5.6"
 
 ESP_IDF_TOOLS_INSTALL_DIR = "global"
@@ -31,9 +31,34 @@ CARGO_WORKSPACE_DIR = { value = "", relative = true }
 #   <<
 BINDGEN_EXTRA_CLANG_ARGS="-Wno-expansion-to-defined"
 
-# ESP-IDF brings in quite a few components, by default. This replaces the defaults with an explicit list,
-# but maintaining such a list is obviously tedious. Best to run with defaults, for now.
+# ESP-IDF brings in quite a few components, by default. This replaces the defaults with an explicit list, to reduce
+# the time 'esp-idf-sys' builds ESP-IDF.
 #
-#ESP_IDF_COMPONENTS = """\
-#   ...,...
-#"""
+# Only "roots" are listed; their dependencies (incl. 'pthread', 'vfs', 'esp_timer', 'esp_driver_gpio|uart|spi',
+# 'sdmmc', 'wear_levelling') are pulled in automatically. See 'skinned/Components-6.1.md'.
+#
+# - separator is ';' (no trimming!): end each line with ';\'
+# - 'main':             'esp-idf-sys' CMake project links a test ELF needing its (empty) 'app_main'
+# - 'driver', 'esp_adc', 'esp_driver_*':
+#                       'esp-idf-hal' 0.47 compiles 'can' (legacy 'driver/twai.h'), 'adc', 'i2c', 'i2s',
+#                       'ledc', 'rmt', 'pcnt', 'timer' unconditionally
+# - 'fatfs', 'spiffs':  'esp-idf-svc' 0.53 'io::vfs' and 'partition' (wear levelling) are not gated by component
+# - 'lwip', 'nvs_flash': not required; kept so that the set matches what Rust 'std' on ESP-IDF implies
+#                       ('std::net' sockets, NVS storage)
+#
+ESP_IDF_COMPONENTS = """\
+    main;\
+    driver;\
+    esp_adc;\
+    esp_driver_i2c;\
+    esp_driver_i2s;\
+    esp_driver_ledc;\
+    esp_driver_rmt;\
+    esp_driver_twai;\
+    esp_driver_gptimer;\
+    esp_driver_pcnt;\
+    fatfs;\
+    spiffs;\
+    lwip;\
+    nvs_flash\
+"""
